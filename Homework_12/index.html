@@ -1,0 +1,211 @@
+<html>
+  <head>
+    <title>Asteroids!</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+  </head>
+  <body>
+    <script>
+
+      var playerX = 240;
+      var playerY = 240;
+      var playerSize = 50;
+      var playerSpeed = 3;
+
+      var obs1X = 100;
+      var obs1Y = 100;
+      var obs1SpdX = 2;
+      var obs1SpdY = 1.5;
+
+      var obs2X = 300;
+      var obs2Y = 200;
+      var obs2SpdX = -1.5;
+      var obs2SpdY = 2.2;
+
+      var obs3X = 200;
+      var obs3Y = 350;
+      var obs3SpdX = 1.8;
+      var obs3SpdY = -1.2;
+
+      var clickX = -999;
+      var clickY = -999;
+      var wasClicked = false;
+
+      var exitX = 450;
+      var exitY = 450;
+      var exitSize = 55;
+
+      var won = false;
+
+      function setup() {
+        createCanvas(500, 500);
+      }
+
+      function drawPlayer() {
+        fill(0, 200, 80);
+        noStroke();
+        rect(playerX - playerSize / 2, playerY - playerSize / 2, playerSize, playerSize);
+      }
+
+      function movePlayer() {
+        if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) {
+          playerX = playerX - playerSpeed;
+        } else if (keyIsDown(RIGHT_ARROW) || keyIsDown(68)) {
+          playerX = playerX + playerSpeed;
+        }
+
+        if (keyIsDown(UP_ARROW) || keyIsDown(87)) {
+          playerY = playerY - playerSpeed;
+        } else if (keyIsDown(DOWN_ARROW) || keyIsDown(83)) {
+          playerY = playerY + playerSpeed;
+        }
+
+        if (playerX < 0) {
+          playerX = 0;
+        } else if (playerX > 500) {
+          playerX = 500;
+        }
+
+        if (playerY < 0) {
+          playerY = 0;
+        } else if (playerY > 500) {
+          playerY = 500;
+        }
+      }
+
+      function drawClickedObstacle() {
+        if (wasClicked == true) {
+          fill(180, 0, 220);
+          noStroke();
+          rect(clickX - 30, clickY - 30, 60, 60);
+        }
+      }
+
+      function drawObstacles() {
+        fill(220, 60, 60);
+        noStroke();
+        rect(obs1X - 35, obs1Y - 35, 70, 70);
+
+        fill(60, 120, 220);
+        circle(obs2X, obs2Y, 55);
+
+        fill(230, 140, 30);
+        triangle(
+          obs3X, obs3Y - 45,
+          obs3X - 40, obs3Y + 30,
+          obs3X + 40, obs3Y + 30
+        );
+      }
+
+      function moveObs1() {
+        obs1X = obs1X + obs1SpdX;
+        obs1Y = obs1Y + obs1SpdY;
+
+        if (obs1X > 500) {
+          obs1X = 0;
+        } else if (obs1X < 0) {
+          obs1X = 500;
+        }
+
+        if (obs1Y > 500) {
+          obs1Y = 0;
+        } else if (obs1Y < 0) {
+          obs1Y = 500;
+        }
+      }
+
+      function moveObs2() {
+        obs2X = obs2X + obs2SpdX;
+        obs2Y = obs2Y + obs2SpdY;
+
+        if (obs2X > 500) {
+          obs2X = 0;
+        } else if (obs2X < 0) {
+          obs2X = 500;
+        }
+
+        if (obs2Y > 500) {
+          obs2Y = 0;
+        } else if (obs2Y < 0) {
+          obs2Y = 500;
+        }
+      }
+
+      function moveObs3() {
+        obs3X = obs3X + obs3SpdX;
+        obs3Y = obs3Y + obs3SpdY;
+
+        if (obs3X > 500) {
+          obs3X = 0;
+        } else if (obs3X < 0) {
+          obs3X = 500;
+        }
+
+        if (obs3Y > 500) {
+          obs3Y = 0;
+        } else if (obs3Y < 0) {
+          obs3Y = 500;
+        }
+      }
+
+      function drawBorder() {
+        noFill();
+        stroke(0, 0, 0);
+        strokeWeight(6);
+        rect(0, 0, 500, 500);
+        noStroke();
+      }
+
+      function drawExit() {
+        if (playerX > exitX - exitSize && playerX < exitX + exitSize && playerY > exitY - exitSize && playerY < exitY + exitSize) {
+          won = true;
+        }
+
+        fill(0, 255, 100);
+        noStroke();
+        rect(exitX - exitSize / 2, exitY - exitSize / 2, exitSize, exitSize, 6);
+        fill(255);
+        textSize(12);
+        textAlign(CENTER);
+        text("EXIT", exitX, exitY + 4);
+      }
+
+      function showWinMessage() {
+        if (won == true) {
+          fill(0, 0, 0, 160);
+          rect(0, 0, 500, 500);
+          fill(0, 255, 100);
+          textSize(48);
+          textAlign(CENTER);
+          text("You Win!", 250, 220);
+          fill(255);
+          textSize(18);
+          text("You made it to the exit!", 250, 270);
+          text("Refresh to play again", 250, 300);
+        }
+      }
+
+      function mouseClicked() {
+        if (won == false) {
+          clickX = mouseX;
+          clickY = mouseY;
+          wasClicked = true;
+        }
+      }
+
+      function draw() {
+        background(255, 255, 255);
+        drawBorder();
+        moveObs1();
+        moveObs2();
+        moveObs3();
+        drawObstacles();
+        drawClickedObstacle();
+        drawExit();
+        movePlayer();
+        drawPlayer();
+        showWinMessage();
+      }
+
+    </script>
+  </body>
+</html>
